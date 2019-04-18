@@ -43,6 +43,19 @@ CONS-cell. Otherwise returns NIL"
 	  (beginning-of-line)))
       (cons math-begin math-end))))
 
+(defun mediawiki-remove-math-tags ()
+  "Remove math environment the cursor is inside while keeping the content of the math environment"
+  (interactive)
+  (let ((region (mediawiki-match-math)))
+    (if region
+	(progn
+	  ;; Remove end tag first if existent
+	  (when (cdr region)
+	    (delete-region (- (cdr region) (length "</math>")) (cdr region)))
+	  ;; Then remove beginning tag
+	  (delete-region (car region) (+ (car region) (length "<math>"))))
+      (message "You're not inside a math environment. Therefore I don't know what to remove."))))
+
 (defvar mediawiki-font-lock-defaults
   `((("==+[^=|\n]+==+" . 'mediawiki-headings)
      ("{{#invoke[^=<>\n#}]+}}" . 'font-lock-keyword-face)
@@ -52,6 +65,8 @@ CONS-cell. Otherwise returns NIL"
 
 (define-derived-mode mediawiki-mode text-mode "MediaWiki"
   "Major mode for editing MediaWiki files."
-  (setq font-lock-defaults mediawiki-font-lock-defaults))
+  (setq font-lock-defaults mediawiki-font-lock-defaults)
+  (define-key mediawiki-mode-map (kbd "C-c C-r C-m")
+    'mediawiki-remove-math-tags))
 
 (provide 'mediawiki-mode)
