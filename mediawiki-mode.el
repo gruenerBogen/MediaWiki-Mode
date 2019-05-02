@@ -43,6 +43,19 @@ CONS-cell. Otherwise returns NIL"
 	  (beginning-of-line)))
       (cons math-begin math-end))))
 
+(defun mediawiki-font-lock-extend-region ()
+  "Extend the search region to include an entire block of text."
+  ;; Avoid compiler warnings about these global variables from font-lock.el.
+  ;; See the documentation for variable `font-lock-extend-region-functions'.
+  (eval-when-compile (defvar font-lock-beg) (defvar font-lock-end))
+  (save-excursion
+    (goto-char font-lock-beg)
+    (let ((found (or (re-search-backward "<math>" nil t) (point-min))))
+      (goto-char font-lock-end)
+      (when (re-search-forward "</math>" nil t)
+	(setq font-lock-end (point)))
+      (setq font-lock-begin found))))
+
 (defun mediawiki-remove-math-tags ()
   "Remove math environment the cursor is inside while keeping the content of the math environment"
   (interactive)
@@ -61,11 +74,17 @@ CONS-cell. Otherwise returns NIL"
      ("{{#invoke[^=<>\n#}]+}}" . 'font-lock-keyword-face)
      ("{{[^=<>|\n#]+\\(|\\|\n\\)" . 'font-lock-keyword-face)
      ("|[^=<>|\n]+=" . 'font-lock-builtin-face)
-     ("<math>.*?</math>" . 'font-lock-variable-name-face))))
+     ("<math>\\(.\\|\n\\)*?</math>" . 'font-lock-variable-name-face))))
+
 
 (define-derived-mode mediawiki-mode text-mode "MediaWiki"
   "Major mode for editing MediaWiki files."
+  ;; Basic font lock
   (setq font-lock-defaults mediawiki-font-lock-defaults)
+  ;; Enable multiline font-lock
+  (setq font-lock-multiline t)
+  (add-hook 'font-lock-extend-region-functions
+	    'mediawiki-font-lock-extend-region)
   (define-key mediawiki-mode-map (kbd "C-c C-r C-m")
     'mediawiki-remove-math-tags))
 
