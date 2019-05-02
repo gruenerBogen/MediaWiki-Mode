@@ -3,6 +3,15 @@
 (defface mediawiki-headings
   '((t (:inherit bold)))
   "Face for headings")
+(defface mediawiki-italic
+  '((t (:inherit italic)))
+  "Face for italic emphasis")
+(defface mediawiki-bold
+  '((t (:inherit bold)))
+  "Face for bold emphasis")
+(defface mediawiki-bold-italic
+  '((t (:inherit bold-italic)))
+  "Face for bold-italic emphasis")
 
 ;; TODO This code doesn't match if we're inside an opening or closing math tag.
 ;; We should fix this.
@@ -74,7 +83,10 @@ CONS-cell. Otherwise returns NIL"
      ("{{#invoke[^=<>\n#}]+}}" . 'font-lock-keyword-face)
      ("{{[^=<>|\n#]+\\(|\\|\n\\)" . 'font-lock-keyword-face)
      ("|[^=<>|\n]+=" . 'font-lock-builtin-face)
-     ("<math>\\(.\\|\n\\)*?</math>" . 'font-lock-variable-name-face))))
+     ("<math>\\(.\\|\n\\)*?</math>" . 'font-lock-variable-name-face)
+     ("'''''[^'|\n]+'''''" . 'mediawiki-bold-italic)
+     ("'''[^'|\n]+'''" . 'mediawiki-bold)
+     ("''[^'|\n]+''" . 'mediawiki-italic))))
 
 
 (define-derived-mode mediawiki-mode text-mode "MediaWiki"
