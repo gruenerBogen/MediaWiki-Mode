@@ -78,6 +78,30 @@ CONS-cell. Otherwise returns NIL"
 	  (delete-region (car region) (+ (car region) (length "<math>"))))
       (message "You're not inside a math environment. Therefore I don't know what to remove."))))
 
+;; TODO enter math editing mode if the cursor is inside the math environment, or after
+;; the math environment has been created.
+(defun mediawiki-insert-math-tags ()
+  "Add math environment around cursor or region when the cursor isn't in a math environment."""
+  (interactive)
+  (let ((start (point)) (end (if (use-region-p)
+				 (mark)
+			       (point))))
+    ;; Ensure start <= end
+    (when (> start end)
+      (let ((tmp start))
+	(setq start end)
+	(setq end tmp)))
+    (if (mediawiki-match-math)
+	(message "You're already inside a math environment. Thus adding another pair of math tags seems inappropriate.")
+      (save-excursion
+	(goto-char end)
+	(insert "</math>")
+	(goto-char start)
+	(insert "<math>")))
+    ;; When the cursor is before the opening math tag, move it inside the math environment.
+    (when (>= start (point))
+	(forward-char 6))))
+
 (defvar mediawiki-font-lock-defaults
   `((("==+[^=|\n]+==+" . 'mediawiki-headings)
      ("{{#invoke[^=<>\n#}]+}}" . 'font-lock-keyword-face)
@@ -98,6 +122,8 @@ CONS-cell. Otherwise returns NIL"
   (add-hook 'font-lock-extend-region-functions
 	    'mediawiki-font-lock-extend-region)
   (define-key mediawiki-mode-map (kbd "C-c C-r C-m")
-    'mediawiki-remove-math-tags))
+    'mediawiki-remove-math-tags)
+  (define-key mediawiki-mode-map (kbd "C-c C-m")
+    'mediawiki-insert-math-tags))
 
 (provide 'mediawiki-mode)
