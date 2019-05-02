@@ -1,3 +1,33 @@
+;;; mediawiki-mode.el --- a major mode for editing mediawiki  -*- lexical-binding: t -*-
+
+;; Copyright (c) 2019 gruenerBogen
+
+;; Author: gruenerBogen <GoleoBaer@web.de>
+;; Keywords: MediaWiki-Mode
+;; Version: 0.0.1
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Comentary:
+
+;; This major mode enables a more comfortable editing of MediaWiki in Emacs.
+;; It is designed for the "Mathe für Nicht-Freaks" Wikibooks project and is
+;; optimised for the use with this. However most of the functionality and
+;; highlighting will probably still work for other purposes involving MediaWiki.
+
+;;; Code:
+
 (require 'font-lock)
 
 (defface mediawiki-headings
