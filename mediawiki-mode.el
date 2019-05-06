@@ -156,4 +156,8 @@ CONS-cell. Otherwise returns NIL"
   (define-key mediawiki-mode-map (kbd "C-c C-m")
     'mediawiki-insert-math-tags))
 
+;; Set .mw as file ending for MediaWiki-Mode
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.mw\\'" . mediawiki-mode))
+
 (provide 'mediawiki-mode)
