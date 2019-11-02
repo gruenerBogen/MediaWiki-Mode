@@ -154,7 +154,11 @@ CONS-cell. Otherwise returns NIL"
   (define-key mediawiki-mode-map (kbd "C-c C-r C-m")
     'mediawiki-remove-math-tags)
   (define-key mediawiki-mode-map (kbd "C-c C-m")
-    'mediawiki-insert-math-tags))
+    'mediawiki-insert-math-tags)
+  ;; Disable auto fill and enable visual line mode instead. This prevents
+  ;; automated line breaks while still maintaining a readable text.
+  (add-hook 'mediawiki-mode-hook 'turn-off-auto-fill)
+  (add-hook 'mediawiki-mode-hook 'visual-line-mode))
 
 ;; Set .mw as file ending for MediaWiki-Mode
 ;;;###autoload
