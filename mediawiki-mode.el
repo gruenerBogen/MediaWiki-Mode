@@ -130,7 +130,24 @@ CONS-cell. Otherwise returns NIL"
 	(insert "<math>")))
     ;; When the cursor is before the opening math tag, move it inside the math environment.
     (when (>= start (point))
-	(forward-char 6))))
+      (forward-char 6))))
+
+(defvar mediawiki-last-inserted-section-depth 1
+  "The section depth entered in the last mediawiki-isert-section call.")
+
+(defun mediawiki-insert-section ()
+  "Add a section at the cursor with a specified depth."
+  (interactive)
+  (let ((section-depth
+	 (string-to-number (read-string
+			    (format "Section Level [%d]: "
+				    mediawiki-last-inserted-section-depth)
+			    "" nil
+			    (number-to-string mediawiki-last-inserted-section-depth))))
+	(section-title (read-string "Tile: ")))
+    (let ((section-mark (make-string (+ section-depth 1) ?=)))
+      (insert (format "%s %s %s\n" section-mark section-title section-mark))
+      (setq mediawiki-last-inserted-section-depth section-depth))))
 
 (defvar mediawiki-font-lock-defaults
   `((("==+[^=|\n]+==+" . 'mediawiki-headings)
@@ -141,7 +158,6 @@ CONS-cell. Otherwise returns NIL"
      ("'''''[^'|\n]+'''''" . 'mediawiki-bold-italic)
      ("'''[^'|\n]+'''" . 'mediawiki-bold)
      ("''[^'|\n]+''" . 'mediawiki-italic))))
-
 
 (define-derived-mode mediawiki-mode text-mode "MediaWiki"
   "Major mode for editing MediaWiki files."
@@ -155,6 +171,8 @@ CONS-cell. Otherwise returns NIL"
     'mediawiki-remove-math-tags)
   (define-key mediawiki-mode-map (kbd "C-c C-m")
     'mediawiki-insert-math-tags)
+  (define-key mediawiki-mode-map (kbd "C-c C-s")
+    'mediawiki-insert-section)
   ;; Disable auto fill and enable visual line mode instead. This prevents
   ;; automated line breaks while still maintaining a readable text.
   (add-hook 'mediawiki-mode-hook 'turn-off-auto-fill)

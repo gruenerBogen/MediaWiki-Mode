@@ -19,3 +19,5 @@ MediaWiki-Mode defines the following commands:
   maths environment.
 * Remove math tags: <kbd>C-c C-r C-m</kbd>. This removes the math-tags if the
   cursor is inside a maths environment.
+* Insert section heading: <kbd>C-c C-s</kbd>. This prompts for a section level,
+  and a heading. Then it inserts the section at the point of the cursor.
