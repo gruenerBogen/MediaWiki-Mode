@@ -149,6 +149,24 @@ CONS-cell. Otherwise returns NIL"
       (insert (format "%s %s %s\n" section-mark section-title section-mark))
       (setq mediawiki-last-inserted-section-depth section-depth))))
 
+(defvar mediawiki-inserted-tag-history '("")
+  "The history of tags entered in mediawiki-insert-tag.")
+(defvar mediawiki-tag-list '("nowiki" "math" "pre")
+  "The list of (initial) tags completed by mediawiki-insert-tag.")
+
+;; TODO merge this insertion part with math tag insertion mechanism.
+(defun mediawiki-insert-tag ()
+  "Insert a pair of xml-tags with the given name"
+  (interactive)
+  (let ((tag-name
+	 (completing-read (format "Tag name [%s]: " (car mediawiki-inserted-tag-history))
+			  (append mediawiki-tag-list mediawiki-inserted-tag-history)
+			  nil nil ""
+			  'mediawiki-inserted-tag-history
+			  (car mediawiki-inserted-tag-history))))
+    (insert (format "<%s></%s>" tag-name tag-name))
+    (backward-char (+ (length tag-name) 3))))
+
 (defvar mediawiki-font-lock-defaults
   `((("==+[^=|\n]+==+" . 'mediawiki-headings)
      ("{{#invoke[^=<>\n#}]+}}" . 'font-lock-keyword-face)
@@ -173,6 +191,8 @@ CONS-cell. Otherwise returns NIL"
     'mediawiki-insert-math-tags)
   (define-key mediawiki-mode-map (kbd "C-c C-s")
     'mediawiki-insert-section)
+  (define-key mediawiki-mode-map (kbd "C-c RET")
+    'mediawiki-insert-tag)
   ;; Disable auto fill and enable visual line mode instead. This prevents
   ;; automated line breaks while still maintaining a readable text.
   (add-hook 'mediawiki-mode-hook 'turn-off-auto-fill)
