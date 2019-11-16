@@ -167,6 +167,16 @@ CONS-cell. Otherwise returns NIL"
     (insert (format "<%s></%s>" tag-name tag-name))
     (backward-char (+ (length tag-name) 3))))
 
+(defun mediawiki-continue-or-insert-list-item ()
+  "Continue an (un-)ordered list by inserting the notation for a new list item in a new line."
+  (interactive)
+  (let ((inserted-character ?*))
+    (save-excursion
+      (beginning-of-line)
+      (if (eql (char-after) ?#)
+	  (setq inserted-character ?#)))
+    (insert (format "\n%c " inserted-character))))
+
 (defvar mediawiki-font-lock-defaults
   `((("==+[^=|\n]+==+" . 'mediawiki-headings)
      ("{{#invoke[^=<>\n#}]+}}" . 'font-lock-keyword-face)
@@ -193,6 +203,8 @@ CONS-cell. Otherwise returns NIL"
     'mediawiki-insert-section)
   (define-key mediawiki-mode-map (kbd "C-c RET")
     'mediawiki-insert-tag)
+  (define-key mediawiki-mode-map (kbd "M-RET")
+    'mediawiki-continue-or-insert-list-item)
   ;; Disable auto fill and enable visual line mode instead. This prevents
   ;; automated line breaks while still maintaining a readable text.
   (add-hook 'mediawiki-mode-hook 'turn-off-auto-fill)

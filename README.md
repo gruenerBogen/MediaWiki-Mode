@@ -24,6 +24,10 @@ MediaWiki-Mode defines the following commands:
 * Insert pair of tags: <kbd>C-c RET</kbd>. This prompts for a tag to
   insert. This inserts an opening and closing tag. For example if you want to
   insert an nowiki-tag this inserts ```<nowiki></nowiki>```.
+* Continue or begin an (un-)ordered list: <kbd>M-RET</kbd>. If the cursor is
+  inside an (un-)ordered list, this inserts a new line together with the notation to
+  continue the list in the new line. If there is no list to continue, this
+  beins an unordered list.
 
 # Configuration
 MediaWiki-Mode has the following variables for customisation:
