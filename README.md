@@ -21,7 +21,7 @@ MediaWiki-Mode defines the following commands:
   cursor is inside a maths environment.
 * Insert section heading: <kbd>C-c C-s</kbd>. This prompts for a section level,
   and a heading. Then it inserts the section at the point of the cursor.
-* Insert pair of tags: <kbd>C-c RET</kbd>. This prompts for a tag to
+* Insert pair of tags: <kbd>C-c m</kbd> or <kbd>C-c C-<return></kbd>. This prompts for a tag to
   insert. This inserts an opening and closing tag. For example if you want to
   insert an nowiki-tag this inserts ```<nowiki></nowiki>```.
 * Continue or begin an (un-)ordered list: <kbd>M-RET</kbd>. If the cursor is
