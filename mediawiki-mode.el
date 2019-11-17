@@ -177,6 +177,12 @@ CONS-cell. Otherwise returns NIL"
 	  (setq inserted-character ?#)))
     (insert (format "\n%c " inserted-character))))
 
+(defun mediawiki-copy-for-wikibooks ()
+  "Copy the entire buffer's text to the clipboard. This is for manually uploading your edits to wikibooks."
+  (interactive)
+  (kill-new (buffer-substring-no-properties (buffer-end -1) (buffer-end 1)))
+  (message "Copied the entire buffer, such that you can paste it into the wikibooks editor."))
+
 (defvar mediawiki-font-lock-defaults
   `((("==+[^=|\n]+==+" . 'mediawiki-headings)
      ("{{#invoke[^=<>\n#}]+}}" . 'font-lock-keyword-face)
@@ -207,6 +213,8 @@ CONS-cell. Otherwise returns NIL"
     'mediawiki-insert-tag)
   (define-key mediawiki-mode-map (kbd "M-RET")
     'mediawiki-continue-or-insert-list-item)
+  (define-key mediawiki-mode-map (kbd "C-c C-u")
+    'mediawiki-copy-for-wikibooks)
   ;; Disable auto fill and enable visual line mode instead. This prevents
   ;; automated line breaks while still maintaining a readable text.
   (add-hook 'mediawiki-mode-hook 'turn-off-auto-fill)

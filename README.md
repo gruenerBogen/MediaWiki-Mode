@@ -28,6 +28,8 @@ MediaWiki-Mode defines the following commands:
   inside an (un-)ordered list, this inserts a new line together with the notation to
   continue the list in the new line. If there is no list to continue, this
   beins an unordered list.
+* Copy to paste on wikibooks: <kbd>C-c C-u</kbd>. This copies the content of
+  the entire buffer, such that you can paste it on wikibooks.
 
 # Configuration
 MediaWiki-Mode has the following variables for customisation:
