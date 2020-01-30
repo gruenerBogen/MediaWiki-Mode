@@ -177,6 +177,66 @@ CONS-cell. Otherwise returns NIL"
 	  (setq inserted-character ?#)))
     (insert (format "\n%c " inserted-character))))
 
+(defun mediawiki-insert-link (link-pattern &optional destination-history)
+  "Ask for destination and link name and insert both according to link-pattern.
+
+The default for the link name will be the destination.
+link-pattern is a string according using the rules of the format command. The first
+parameter will be the destination and the second the link name.
+Destination"
+  (if (not destination-history)
+      (setf destination-history '("")))
+  (let ((destination
+	 (completing-read (format "Destination [%s]: " (car destination-history))
+			  destination-history
+			  nil nil ""
+			  nil
+			  (car destination-history))))
+    (let ((link-name
+	   (completing-read (format "Link name [%s]: " destination)
+			    (list destination)
+			    nil nil ""
+			    nil
+			    destination)))
+      (insert (format link-pattern destination link-name)))
+    destination))
+
+(defmacro mediawiki-prepend-to-list-if-not-first (list-to-add-to value &optional predicate)
+  "Add value to the list 'list-to-add-to' if it is not the first value on the list.
+
+predicate is used for the comparison. It defaults to eq."
+  (if (not predicate)
+      (setf predicate 'eq))
+  (let ((value-storage (gensym)))
+    `(let ((,value-storage ,value))
+       (if (not (,predicate ,value-storage (car ,list-to-add-to)))
+	   (setq ,list-to-add-to
+		 (cons ,value-storage ,list-to-add-to))))))
+
+(defvar mediawiki-inserted-internal-link-destination-history '("")
+  "The history of destinations of internal links entered in mediawiki-insert-internal-link.")
+
+(defun mediawiki-insert-internal-link ()
+  "Insert an internal link using the questions of mediawiki-insert-link."
+  (interactive)
+  (mediawiki-prepend-to-list-if-not-first
+   mediawiki-inserted-internal-link-destination-history
+   (mediawiki-insert-link "[[%1$s|%2$s]]"
+			  mediawiki-inserted-internal-link-destination-history)
+   string=))
+
+(defvar mediawiki-inserted-external-link-destination-history '("")
+  "The history of destinations of external links entered in mediawiki-insert-external-link.")
+
+(defun mediawiki-insert-external-link ()
+  "insert an external link using the questions of mediawiki-insert-link."
+  (interactive)
+  (mediawiki-prepend-to-list-if-not-first
+   mediawiki-inserted-external-link-destination-history
+   (mediawiki-insert-link "[%1$s %2$s]"
+			  mediawiki-inserted-external-link-destination-history)
+   string=))
+
 (defun mediawiki-copy-for-wikibooks ()
   "Copy the entire buffer's text to the clipboard. This is for manually uploading your edits to wikibooks."
   (interactive)
@@ -215,6 +275,10 @@ CONS-cell. Otherwise returns NIL"
     'mediawiki-continue-or-insert-list-item)
   (define-key mediawiki-mode-map (kbd "C-c C-u")
     'mediawiki-copy-for-wikibooks)
+  (define-key mediawiki-mode-map (kbd "C-c )")
+    'mediawiki-insert-internal-link)
+  (define-key mediawiki-mode-map (kbd "C-c [")
+    'mediawiki-insert-external-link)
   ;; Disable auto fill and enable visual line mode instead. This prevents
   ;; automated line breaks while still maintaining a readable text.
   (add-hook 'mediawiki-mode-hook 'turn-off-auto-fill)

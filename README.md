@@ -2,7 +2,7 @@
 A simple Emacs major mode for editing Wikibook's MediaWiki. This is optimised for https://de.wikibooks.org/wiki/Mathe_f%C3%BCr_Nicht-Freaks
 
 # Installation
-Download `mediawiki-mode.el` and put it somewhere you recognise. Then put the
+Download `mediawiki-mode.el` and put it somewhere you recognise. Then insert the
 following into your `.emacs`-file:
 ```lisp
 (load-file "Path to mediawiki-mode.el")
@@ -24,6 +24,10 @@ MediaWiki-Mode defines the following commands:
 * Insert pair of tags: <kbd>C-c m</kbd> or <kbd>C-c C-&lt;return&gt;</kbd>. This prompts for a tag to
   insert. This inserts an opening and closing tag. For example if you want to
   insert an nowiki-tag this inserts ```<nowiki></nowiki>```.
+* Insert an internal link: <kbd>C-c )</kbd>. This prompts for a destination
+  and a link name. Then it inserts the link at the cursor's position.
+* Insert an external link: <kbd>C-c [</kbd>. This prompts for a destination
+  and a link name. Then it inserts the link at the cursor's position.
 * Continue or begin an (un-)ordered list: <kbd>M-RET</kbd>. If the cursor is
   inside an (un-)ordered list, this inserts a new line together with the notation to
   continue the list in the new line. If there is no list to continue, this
