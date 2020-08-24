@@ -135,22 +135,24 @@ CONS-cell. Otherwise returns NIL"
       (when (>= start (point))
 	(forward-char 6)))))
 
-(defvar mediawiki-last-inserted-section-depth 1
+(defvar mediawiki-inserted-section-depth-history '("1")
   "The section depth entered in the last mediawiki-isert-section call.")
 
 (defun mediawiki-insert-section ()
   "Add a section at the cursor with a specified depth."
   (interactive)
   (let ((section-depth
-	 (string-to-number (read-string
-			    (format "Section Level [%d]: "
-				    mediawiki-last-inserted-section-depth)
-			    "" nil
-			    (number-to-string mediawiki-last-inserted-section-depth))))
+	 (string-to-number
+	  (completing-read (format "Section Level [%s]: "
+				   (first mediawiki-inserted-section-depth-history))
+			   mediawiki-inserted-section-depth-history
+			   nil nil nil
+			   'mediawiki-inserted-section-depth-history
+			   (first mediawiki-inserted-section-depth-history))))
 	(section-title (read-string "Tile: ")))
     (let ((section-mark (make-string (+ section-depth 1) ?=)))
       (insert (format "%s %s %s\n" section-mark section-title section-mark))
-      (setq mediawiki-last-inserted-section-depth section-depth))))
+      (first mediawiki-inserted-section-depth-history))))
 
 (defvar mediawiki-inserted-tag-history '("")
   "The history of tags entered in mediawiki-insert-tag.")
