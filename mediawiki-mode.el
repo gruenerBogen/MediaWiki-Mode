@@ -127,10 +127,10 @@ CONS-cell. Otherwise returns NIL"
 	(goto-char end)
 	(insert "</math>")
 	(goto-char start)
-	(insert "<math>")))
-    ;; When the cursor is before the opening math tag, move it inside the math environment.
-    (when (>= start (point))
-      (forward-char 6))))
+	(insert "<math>"))
+      ;; When the cursor is before the opening math tag, move it inside the math environment.
+      (when (>= start (point))
+	(forward-char 6)))))
 
 (defvar mediawiki-last-inserted-section-depth 1
   "The section depth entered in the last mediawiki-isert-section call.")
