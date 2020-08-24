@@ -1,6 +1,6 @@
 ;;; mediawiki-mode.el --- a major mode for editing mediawiki  -*- lexical-binding: t -*-
 
-;; Copyright (c) 2019 gruenerBogen
+;; Copyright (c) 2019-2020 gruenerBogen
 
 ;; Author: gruenerBogen <GoleoBaer@web.de>
 ;; Keywords: MediaWiki-Mode
@@ -42,6 +42,9 @@
 (defface mediawiki-bold-italic
   '((t (:inherit bold-italic)))
   "Face for bold-italic emphasis")
+(defface mediawiki-link-face
+  '((t (:underline t :foreground "RoyalBlue1")))
+  "Face for links.")
 
 ;; TODO This code doesn't match if we're inside an opening or closing math tag.
 ;; We should fix this.
@@ -251,7 +254,9 @@ predicate is used for the comparison. It defaults to eq."
      ("<math>\\(.\\|\n\\)*?</math>" . 'font-lock-variable-name-face)
      ("'''''[^'|\n]+'''''" . 'mediawiki-bold-italic)
      ("'''[^'|\n]+'''" . 'mediawiki-bold)
-     ("''[^'|\n]+''" . 'mediawiki-italic))))
+     ("''[^'|\n]+''" . 'mediawiki-italic)
+     ("\\[\\[[^|]+|[^]]+\\]\\]" . 'mediawiki-link-face)
+     ("\\[[^][[:space:]]+://[^][[:space:]]+ [^]]+\\]" . 'mediawiki-link-face))))
 
 (define-derived-mode mediawiki-mode text-mode "MediaWiki"
   "Major mode for editing MediaWiki files."
@@ -289,3 +294,4 @@ predicate is used for the comparison. It defaults to eq."
 (add-to-list 'auto-mode-alist '("\\.mw\\'" . mediawiki-mode))
 
 (provide 'mediawiki-mode)
+;;; mediawiki-mode.el ends here
