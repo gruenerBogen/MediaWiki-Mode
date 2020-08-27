@@ -15,20 +15,23 @@ MediaWiki-Mode defines the following commands:
 
 * Insert math tags: <kbd>C-c C-m</kbd>. If you highlighted a region, this
   inserts the math-tags around the region. Otherwise this inserts the
-  math-tags around the cursor. This does nothing if the cursor is inside a
+  math-tags around the point. This does nothing if the point is inside a
   maths environment.
 * Remove math tags: <kbd>C-c C-r C-m</kbd>. This removes the math-tags if the
-  cursor is inside a maths environment.
+  point is inside a maths environment.
 * Insert section heading: <kbd>C-c C-s</kbd>. This prompts for a section level,
-  and a heading. Then it inserts the section at the point of the cursor.
-* Insert pair of tags: <kbd>C-c m</kbd> or <kbd>C-c C-&lt;return&gt;</kbd>. This prompts for a tag to
-  insert. This inserts an opening and closing tag. For example if you want to
-  insert an nowiki-tag this inserts ```<nowiki></nowiki>```.
+  and a heading. Then it inserts the section at the point of the point.
+* Insert pair of tags: <kbd>C-c m</kbd> or <kbd>C-c
+  C-&lt;return&gt;</kbd>. This prompts for a tag to insert. This inserts an
+  opening and closing tag around the currently highlighted region. If the no
+  region is highlighted, it inserts an opening and closing tag around the
+  point. For example, if you want to insert an nowiki-tag this inserts
+  ```<nowiki></nowiki>```.
 * Insert an internal link: <kbd>C-c )</kbd>. This prompts for a destination
-  and a link name. Then it inserts the link at the cursor's position.
+  and a link name. Then it inserts the link at the point's position.
 * Insert an external link: <kbd>C-c [</kbd>. This prompts for a destination
-  and a link name. Then it inserts the link at the cursor's position.
-* Continue or begin an (un-)ordered list: <kbd>M-RET</kbd>. If the cursor is
+  and a link name. Then it inserts the link at the point's position.
+* Continue or begin an (un-)ordered list: <kbd>M-RET</kbd>. If the point is
   inside an (un-)ordered list, this inserts a new line together with the notation to
   continue the list in the new line. If there is no list to continue, this
   beins an unordered list.
