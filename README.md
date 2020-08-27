@@ -1,7 +1,7 @@
 # MediaWiki-Mode
 A simple Emacs major mode for editing Wikibook's MediaWiki. This is optimised for https://de.wikibooks.org/wiki/Mathe_f%C3%BCr_Nicht-Freaks
 
-# Installation
+## Installation
 Download `mediawiki-mode.el` and put it somewhere you recognise. Then insert the
 following into your `.emacs`-file:
 ```lisp
@@ -10,7 +10,7 @@ following into your `.emacs`-file:
 
 This adds `.mw` as file ending for MediaWiki files.
 
-# Command Reference
+## Command Reference
 MediaWiki-Mode defines the following commands:
 
 * Insert math tags: <kbd>C-c C-m</kbd>. If you highlighted a region, this
@@ -37,8 +37,20 @@ MediaWiki-Mode defines the following commands:
   beins an unordered list.
 * Copy to paste on wikibooks: <kbd>C-c C-u</kbd>. This copies the content of
   the entire buffer, such that you can paste it on wikibooks.
+  
+### Changing font
+The following commands allow a change of font:
 
-# Configuration
+  * Set font to bold: <kbd>C-c C-f C-b</kbd>.
+  * Set font to italic or emphasise text: <kbd>C-c C-f C-i</kbd> or <kbd>C-c
+    C-f C-e</kbd>.
+
+All font changing commands can either be applied to the region, if active, or
+the point. In the former case, they insert the markup for the font change
+around the highlighted region. In the latter, they insert it around the
+point.
+
+## Configuration
 MediaWiki-Mode has the following variables for customisation:
 
 * ```mediawiki-tag-list```: This is a list of strings containing all tags

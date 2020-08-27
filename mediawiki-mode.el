@@ -105,6 +105,28 @@ environment as CONS-cell.  Otherwise return NIL."
 (defvar mediawiki-tag-list '("nowiki" "math" "pre")
   "The list of (initial) tags completed by mediawiki-insert-tag.")
 
+(defun mediawiki-insert-text-arount-region (before-text after-text)
+  "Insert BEFORE-TEXT before and AFTER-TEXT after the current region.
+
+If the current region is not active, insert BEFORE-TEXT before and AFTER-TEXT
+after the point."
+  (let ((start (point)) (end (if (use-region-p)
+				 (mark)
+			       (point))))
+    ;; Ensure start <= end
+    (when (> start end)
+      (let ((tmp start))
+	(setq start end)
+	(setq end tmp)))
+      (save-excursion
+	(goto-char end)
+	(insert after-text)
+	(goto-char start)
+	(insert before-text))
+      ;; When the point is before the opening tag, move it inside the tag environment.
+      (when (>= start (point))
+	(forward-char (length before-text)))))
+
 (defun mediawiki-insert-tag (tag-name)
   "Insert TAG-NAME around the current region.
 
@@ -118,22 +140,8 @@ If the current region is not active, insert TAG-NAME around the point."
 			  'mediawiki-inserted-tag-history
 			  (car mediawiki-inserted-tag-history))))
   ;; Get the region if it is active.
-  (let ((start (point)) (end (if (use-region-p)
-				 (mark)
-			       (point))))
-    ;; Ensure start <= end
-    (when (> start end)
-      (let ((tmp start))
-	(setq start end)
-	(setq end tmp)))
-      (save-excursion
-	(goto-char end)
-	(insert (format "</%s>" tag-name))
-	(goto-char start)
-	(insert (format "<%s>" tag-name)))
-      ;; When the point is before the opening tag, move it inside the tag environment.
-      (when (>= start (point))
-	(forward-char (+ (length tag-name) 2)))))
+  (mediawiki-insert-text-arount-region (format "<%s>" tag-name)
+				       (format "</%s>" tag-name)))
 
 ;; TODO enter math editing mode if the cursor is inside the math environment, or after
 ;; the math environment has been created.
@@ -158,6 +166,18 @@ If the current region is not active, insert TAG-NAME around the point."
 	  ;; Then remove beginning tag
 	  (delete-region (car region) (+ (car region) (length "<math>"))))
       (message "You're not inside a math environment. Therefore I don't know what to remove."))))
+
+;;; Commands for changing font properties
+
+(defun mediawiki-insert-bold-tag ()
+  "Insert bold tags around the region or the point if the region is inactive."
+  (interactive)
+  (mediawiki-insert-text-arount-region "'''" "'''"))
+
+(defun mediawiki-insert-italic-tag ()
+  "Insert italic tags around the rgion or the point if the region is inactive."
+  (interactive)
+  (mediawiki-insert-text-arount-region "''" "''"))
 
 ;;; Insertion of sections
 
@@ -392,6 +412,13 @@ Currently this does the following (only the first applicable case is executed):
     'mediawiki-insert-internal-link)
   (define-key mediawiki-mode-map (kbd "C-c [")
     'mediawiki-insert-external-link)
+  ;; Keys for changing font
+  (define-key mediawiki-mode-map (kbd "C-c C-f C-b")
+    'mediawiki-insert-bold-tag)
+  (define-key mediawiki-mode-map (kbd "C-c C-f C-i")
+    'mediawiki-insert-italic-tag)
+  (define-key mediawiki-mode-map (kbd "C-C C-f C-e")
+    'mediawiki-insert-italic-tag)
   ;; Disable auto fill and enable visual line mode instead. This prevents
   ;; automated line breaks while still maintaining a readable text.
   (add-hook 'mediawiki-mode-hook 'turn-off-auto-fill)
