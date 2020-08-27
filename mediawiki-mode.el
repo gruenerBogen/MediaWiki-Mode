@@ -30,21 +30,33 @@
 
 (require 'font-lock)
 
+;;; Customisations
+
+(defgroup mediawiki nil
+  "Major mode for editing MediaWiki files."
+  :group 'text
+  :prefix "mediawiki-")
+
 (defface mediawiki-headings
   '((t (:inherit bold)))
-  "Face for headings")
+  "Face for headings"
+  :group 'mediawiki)
 (defface mediawiki-italic
   '((t (:inherit italic)))
-  "Face for italic emphasis")
+  "Face for italic emphasis"
+  :group 'mediawiki)
 (defface mediawiki-bold
   '((t (:inherit bold)))
-  "Face for bold emphasis")
+  "Face for bold emphasis"
+  :group 'mediawiki)
 (defface mediawiki-bold-italic
   '((t (:inherit bold-italic)))
-  "Face for bold-italic emphasis")
+  "Face for bold-italic emphasis"
+  :group 'mediawiki)
 (defface mediawiki-link-face
   '((t (:underline t :foreground "RoyalBlue1")))
-  "Face for links.")
+  "Face for links."
+  :group 'mediawiki)
 
 ;; TODO This code doesn't match if we're inside an opening or closing math tag.
 ;; We should fix this.
