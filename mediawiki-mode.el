@@ -248,6 +248,85 @@ predicate is used for the comparison. It defaults to eq."
   (kill-new (buffer-substring-no-properties (buffer-end -1) (buffer-end 1)))
   (message "Copied the entire buffer, such that you can paste it into the wikibooks editor."))
 
+;;; Indentation
+
+(defun mediawiki-template-argument-p (&optional n)
+  "Check if the current line starts with a template argument.
+
+Returns non-nil if the current line starts with a template argument and nil
+otherwise.  A line is said to start with a template argument if the line starts
+with \"[:space:]+|[:word:]+=\".
+
+The parameter N is used as in BEGINNING-OF-LINE."
+  (save-excursion
+    (beginning-of-line n)
+    (re-search-forward "\\=[[:blank:]]*|\\sw+=" (line-end-position) t)))
+
+(defun mediawiki-indentation-of-line (&optional n)
+  "Return indentation of the current line.
+
+The parameter N is used as in BEGINNING-OF-LINE"
+  (save-excursion
+    (beginning-of-line n)
+    (re-search-forward "\\=\\([[:blank:]]*\\)" (line-end-position))
+    (match-string 1)))
+
+(defun mediawiki-indent-line-to (&optional n)
+  "Indent current line such that it begins with N spaces.
+
+If N is nil, it defaults to 0."
+  (when (not n)
+    (setf n 0))
+  (let ((desired-indentation (make-string n ?\s)))
+    ;; Only change indentation, when the indentation is wrong.
+    (unless (string= desired-indentation (mediawiki-indentation-of-line))
+      (save-excursion
+	(beginning-of-line)
+	;; Remove all present spaces
+	(while (or (char-equal (char-after) ?\s) (char-equal (char-after) ?\t))
+	  (delete-char 1))
+	;; Insert desired indentation
+	(insert desired-indentation)))))
+
+(defun mediawiki-point-to-end-of-indentation ()
+  "Move the poitn to the end of indentation, if the point is inside the indentation."
+  (let ((indent-end (+ (line-beginning-position)
+		       (length (mediawiki-indentation-of-line)))))
+    (when (< (point) indent-end)
+      (goto-char indent-end))))
+
+(defun mediawiki-indent-line ()
+  "Indent the current line according in MediaWiki-mode.
+
+Currently this does the following (only the first applicable case is executed):
+1. If the current line starts with a template argument according to
+   MEDIAWIKI-TEMPLATE-ARGUMENT-P, the line is treated as an argument for a
+   template.  These are indented by a single space.
+2. If the previous line falls into case 1. no indentation is allowed.
+3. Indent in the same way as the previous line.  (That is, if the indentation of
+   the previous line and the current line differ, indent the same amount as the
+   previous line.)"
+  (interactive)
+  ;; Implementation of case 1.
+  (if (mediawiki-template-argument-p)
+      (mediawiki-indent-line-to 1)
+    ;; Implementation of case 2.
+    (if (mediawiki-template-argument-p 0)
+	(mediawiki-indent-line-to 0)
+      ;; Implementation of case 3.
+      (let ((previous-indentation (mediawiki-indentation-of-line 0)))
+	(unless (string= (mediawiki-indentation-of-line)
+			 previous-indentation)
+	  ;; Remove old indentation
+	  (mediawiki-indent-line-to 0)
+	  ;; Insert indentation ofprevious line.
+	  (save-excursion
+	    (beginning-of-line)
+	    (insert previous-indentation))))))
+  (mediawiki-point-to-end-of-indentation))
+
+;;; Mode definition
+
 (defvar mediawiki-font-lock-defaults
   `((("==+[^=|\n]+==+" . 'mediawiki-headings)
      ("{{#invoke[^=<>\n#}]+}}" . 'font-lock-keyword-face)
@@ -289,7 +368,9 @@ predicate is used for the comparison. It defaults to eq."
   ;; Disable auto fill and enable visual line mode instead. This prevents
   ;; automated line breaks while still maintaining a readable text.
   (add-hook 'mediawiki-mode-hook 'turn-off-auto-fill)
-  (add-hook 'mediawiki-mode-hook 'visual-line-mode))
+  (add-hook 'mediawiki-mode-hook 'visual-line-mode)
+  ;; Setup indentation with mediawiki-indent-line
+  (set (make-local-variable 'indent-line-function) 'mediawiki-indent-line))
 
 ;; Set .mw as file ending for MediaWiki-Mode
 ;;;###autoload
