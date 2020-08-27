@@ -49,16 +49,17 @@
 ;; TODO This code doesn't match if we're inside an opening or closing math tag.
 ;; We should fix this.
 (defun mediawiki-match-math ()
-  "Checks if the cursor is inside a math environment. If this is the case,
-it returns the beginning and ending position of that math environment as
-CONS-cell. Otherwise returns NIL"
+  "Check if the cursor is inside a math environment.
+
+If this is the case, return the beginning and ending position of that math
+environment as CONS-cell.  Otherwise return NIL."
   ;; We start by assuming that we're in math mode
   (let ((not-found t) (in-math-mode t) math-begin math-end)
     ;; Find starting math tag
     (save-excursion
       (while not-found
 	;; Find openig or closing math tag
-	(when (looking-back "<\\(/?\\)math>.*")
+	(when (looking-back "<\\(/?\\)math>.*" nil)
 	  (setq not-found nil)
 	  ;; Check if we found a closing math tag
 	  (if (string= (match-string-no-properties 1) "/")
@@ -99,14 +100,16 @@ CONS-cell. Otherwise returns NIL"
       (setq font-lock-begin found))))
 
 (defun mediawiki-remove-math-tags ()
-  "Remove math environment the cursor is inside while keeping the content of the math environment"
+  "Remove math environment the cursor is inside while keeping the content of the math environment."
   (interactive)
   (let ((region (mediawiki-match-math)))
     (if region
 	(progn
 	  ;; Remove end tag first if existent
 	  (when (cdr region)
-	    (delete-region (- (cdr region) (length "</math>")) (cdr region)))
+	    (delete-region (- (cdr region)
+			      (length "</math>"))
+			   (cdr region)))
 	  ;; Then remove beginning tag
 	  (delete-region (car region) (+ (car region) (length "<math>"))))
       (message "You're not inside a math environment. Therefore I don't know what to remove."))))
@@ -114,7 +117,7 @@ CONS-cell. Otherwise returns NIL"
 ;; TODO enter math editing mode if the cursor is inside the math environment, or after
 ;; the math environment has been created.
 (defun mediawiki-insert-math-tags ()
-  "Add math environment around cursor or region when the cursor isn't in a math environment."""
+  "Add math environment around cursor or region when the cursor isn't in a math environment."
   (interactive)
   (let ((start (point)) (end (if (use-region-p)
 				 (mark)
@@ -161,7 +164,7 @@ CONS-cell. Otherwise returns NIL"
 
 ;; TODO merge this insertion part with math tag insertion mechanism.
 (defun mediawiki-insert-tag ()
-  "Insert a pair of xml-tags with the given name"
+  "Insert a pair of xml-tags with the given name."
   (interactive)
   (let ((tag-name
 	 (completing-read (format "Tag name [%s]: " (car mediawiki-inserted-tag-history))
@@ -183,12 +186,14 @@ CONS-cell. Otherwise returns NIL"
     (insert (format "\n%c " inserted-character))))
 
 (defun mediawiki-insert-link (link-pattern &optional destination-history)
-  "Ask for destination and link name and insert both according to link-pattern.
+  "Ask for destination and link name and insert both according to LINK-PATTERN.
 
 The default for the link name will be the destination.
-link-pattern is a string according using the rules of the format command. The first
-parameter will be the destination and the second the link name.
-Destination"
+LINK-PATTERN is a string according using the rules of the format command.  The
+first parameter will be the destination and the second the link name.
+DESTINATION-HISTORY is a list which contains the history of destinations.
+
+This returns the destination which was chosen by the user."
   (if (not destination-history)
       (setf destination-history '("")))
   (let ((destination
@@ -207,9 +212,9 @@ Destination"
     destination))
 
 (defmacro mediawiki-prepend-to-list-if-not-first (list-to-add-to value &optional predicate)
-  "Add value to the list 'list-to-add-to' if it is not the first value on the list.
+  "Add VALUE to the list LIST-TO-ADD-TO if it is not the first value on it.
 
-predicate is used for the comparison. It defaults to eq."
+PREDICATE is used for the comparison.  It defaults to eq."
   (if (not predicate)
       (setf predicate 'eq))
   (let ((value-storage (gensym)))
@@ -234,7 +239,7 @@ predicate is used for the comparison. It defaults to eq."
   "The history of destinations of external links entered in mediawiki-insert-external-link.")
 
 (defun mediawiki-insert-external-link ()
-  "insert an external link using the questions of mediawiki-insert-link."
+  "Insert an external link using the questions of mediawiki-insert-link."
   (interactive)
   (mediawiki-prepend-to-list-if-not-first
    mediawiki-inserted-external-link-destination-history
@@ -243,7 +248,9 @@ predicate is used for the comparison. It defaults to eq."
    string=))
 
 (defun mediawiki-copy-for-wikibooks ()
-  "Copy the entire buffer's text to the clipboard. This is for manually uploading your edits to wikibooks."
+  "Copy the entire buffer's text to the clipboard.
+
+This is for manually uploading your edits to wikibooks."
   (interactive)
   (kill-new (buffer-substring-no-properties (buffer-end -1) (buffer-end 1)))
   (message "Copied the entire buffer, such that you can paste it into the wikibooks editor."))
@@ -257,7 +264,7 @@ Returns non-nil if the current line starts with a template argument and nil
 otherwise.  A line is said to start with a template argument if the line starts
 with \"[:space:]+|[:word:]+=\".
 
-The parameter N is used as in BEGINNING-OF-LINE."
+The parameter N is used as in `beginning-of-line'."
   (save-excursion
     (beginning-of-line n)
     (re-search-forward "\\=[[:blank:]]*|\\sw+=" (line-end-position) t)))
@@ -265,7 +272,7 @@ The parameter N is used as in BEGINNING-OF-LINE."
 (defun mediawiki-indentation-of-line (&optional n)
   "Return indentation of the current line.
 
-The parameter N is used as in BEGINNING-OF-LINE"
+The parameter N is used as in `beginning-of-line'."
   (save-excursion
     (beginning-of-line n)
     (re-search-forward "\\=\\([[:blank:]]*\\)" (line-end-position))
@@ -300,7 +307,7 @@ If N is nil, it defaults to 0."
 
 Currently this does the following (only the first applicable case is executed):
 1. If the current line starts with a template argument according to
-   MEDIAWIKI-TEMPLATE-ARGUMENT-P, the line is treated as an argument for a
+   `mediawiki-template-argument-p', the line is treated as an argument for a
    template.  These are indented by a single space.
 2. If the previous line falls into case 1. no indentation is allowed.
 3. Indent in the same way as the previous line.  (That is, if the indentation of
