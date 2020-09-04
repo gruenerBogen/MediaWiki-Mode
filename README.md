@@ -8,7 +8,12 @@ following into your `.emacs`-file:
 (load-file "Path to mediawiki-mode.el")
 ```
 
-This adds `.mw` as file ending for MediaWiki files.
+This adds `.mw` as file ending for MediaWiki files. If you have Yasnipped
+installed and furthermore want to install the Mathe für Nicht-Freaks
+MediaWiki templates, add the following line after the `load-file` call:
+```lisp
+(mediawiki-mode-snippet-initialize)
+```
 
 ## Command Reference
 MediaWiki-Mode defines the following commands:
@@ -49,6 +54,35 @@ All font changing commands can either be applied to the region, if active, or
 the point. In the former case, they insert the markup for the font change
 around the highlighted region. In the latter, they insert it around the
 point.
+
+### Mathe für Nicht-Freaks MediaWiki tempaltes
+The Mathe für Nicht-Freaks project uses a number of MediaWiki templates to
+structure their articles. You can insert them using <kbd>C-c C-e</kbd> or by
+using their key and pressing <kbd>TAB</kbd>. The key is the name of the
+snippet prefixed with `mfnf-`. The following templates are shipped with
+MediaWiki-Mode:
+
+| Name                   | Template                                                |
+|------------------------|---------------------------------------------------------|
+| alternativer-beweis    | :Mathe für Nicht-Freaks: Vorlage:Alternativer Beweis    |
+| anker                  | Anker                                                   |
+| aufgabe                | :Mathe für Nicht-Freaks: Vorlage:Aufgabe                |
+| beispiel               | :Mathe für Nicht-Freaks: Vorlage:Beispiel               |
+| beweis                 | :Mathe für Nicht-Freaks: Vorlage:Beweis                 |
+| beweisschritt          | :Mathe für Nicht-Freaks: Vorlage:Beweisschritt          |
+| definition             | :Mathe für Nicht-Freaks: Vorlage:Definition             |
+| fallunterscheidung     | :Mathe für Nicht-Freaks: Vorlage:Fallunterscheidung     |
+| formel                 | Formel                                                  |
+| frage                  | :Mathe für Nicht-Freaks: Vorlage:Frage                  |
+| gruppenaufgabe         | :Mathe für Nicht-Freaks: Vorlage:Gruppenaufgabe         |
+| hauptartikel           | :Mathe für Nicht-Freaks: Vorlage:Hauptartikel           |
+| hinweis                | :Mathe für Nicht-Freaks: Vorlage:Hinweis                |
+| klapptext              | :Mathe für Nicht-Freaks: Vorlage:Klapptext              |
+| lösung                 | :Mathe für Nicht-Freaks: Vorlage:Lösung                 |
+| lösungsweg             | :Mathe für Nicht-Freaks: Vorlage:Lösungsweg             |
+| satz                   | :Mathe für Nicht-Freaks: Vorlage:Satz                   |
+| vollständige-induktion | :Mathe für Nicht-Freaks: Vorlage:Vollständige Induktion |
+| warnung                | :Mathe für Nicht-Freaks: Vorlage:Warnung                |
 
 ## Configuration
 MediaWiki-Mode has the following variables for customisation:

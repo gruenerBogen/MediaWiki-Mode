@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: vollständige-induktion
+# key: mfnf-vollständige-induktion
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Vollständige Induktion
+ |erfuellungsmenge=$1
+ |aussageform=
+$2
+ |induktionsanfang=
+$3
+ |induktionsvoraussetzung=
+$4
+ |induktionsbehauptung=
+$5
+ |beweis_induktionsschritt=
+$0
+}}

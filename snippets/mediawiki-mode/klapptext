@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: klapptext
+# key: mfnf-klapptext
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Klapptext
+ |kopf=$1
+ |inhalt=
+$0
+}}

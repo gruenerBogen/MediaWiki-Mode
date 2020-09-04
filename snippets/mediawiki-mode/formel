@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: formel
+# key: mfnf-formel
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{Formel|<math>$0</math>}}

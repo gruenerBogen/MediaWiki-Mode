@@ -58,6 +58,30 @@
   "Face for links."
   :group 'mediawiki)
 
+;;; Yasnippet integration
+;; Load add ./snippets to the yas-snippet-dirs
+;; The content of the when clause is adapted from the file yasnippet-snippets.el
+;; from the `yasnippet-snippets' package.
+(when (require 'yasnippet nil 'noerror)
+  (defconst mediawiki-mode-snippets-dir
+    (expand-file-name
+     "snippets"
+     (file-name-directory
+      ;; Copied from `f-this-file' from f.el.
+      (cond
+       (load-in-progress load-file-name)
+       ((and (boundp 'byte-compile-current-file) byte-compile-current-file)
+	byte-compile-current-file)
+       (:else (buffer-file-name)))))
+    "Location of the snippets directory shipped with `mediawiki-mode'.")
+  (defun mediawiki-mode-snippet-initialize ()
+    "Load the `mediawiki-mode' snippets directory."
+    ;; NOTE: we add the symbol `mediawiki-mode-snippets-dir' rather than its
+    ;; value, so that yasnippet will automatically find the directory
+    ;; after this package is updated (i.e., moves directory).
+    (add-to-list 'yas-snippet-dirs 'mediawiki-mode-snippets-dir t)
+    (yas-load-directory mediawiki-mode-snippets-dir)))
+
 ;; TODO This code doesn't match if we're inside an opening or closing math tag.
 ;; We should fix this.
 (defun mediawiki-match-math ()

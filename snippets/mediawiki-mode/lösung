@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: lösung
+# key: mfnf-lösung
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Lösung
+ |titel=$1
+ |lösung=
+$0
+}}

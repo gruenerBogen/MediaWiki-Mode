@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: lösungsweg
+# key: mfnf-lösungsweg
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Lösungsweg
+ |titel=$1
+ |lösungsweg=
+$0
+}}

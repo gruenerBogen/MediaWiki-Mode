@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: definition
+# key: mfnf-definition
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Definition
+ |titel=$1
+ |definition=
+$0
+}}

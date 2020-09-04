@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: frage
+# key: mfnf-frage
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Frage
+ |frage=$1
+ |antwort=
+$0
+}}
