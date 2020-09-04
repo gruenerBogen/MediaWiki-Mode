@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: aufgabe
+# key: mfnf-aufgabe
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Aufgabe
+ |titel=$1
+ |aufgabe=$2
+ |lösung=
+$0
+}}

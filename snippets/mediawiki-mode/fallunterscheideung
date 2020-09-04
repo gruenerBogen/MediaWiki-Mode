@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: fallunterscheidung
+# key: mfnf-fallunterscheidung
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Fallunterscheidung
+ |fall1=$1
+ |beweis1=
+$0
+ |fall2=$2=
+ |beweis2=
+
+}}

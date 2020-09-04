@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: anker
+# key: mfnf-anker
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{Anker|$0}}

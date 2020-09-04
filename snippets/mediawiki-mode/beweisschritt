@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: beweisschritt
+# key: mfnf-beweisschritt
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Beweisschritt
+ |ziel=$1
+ |beweisschritt=
+$0
+}}

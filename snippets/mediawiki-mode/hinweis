@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: hinweis
+# key: mfnf-hinweis
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Hinweis|$0}}

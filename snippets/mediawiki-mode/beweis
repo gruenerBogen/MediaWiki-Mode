@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: beweis
+# key: mfnf-beweis
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Beweis
+ |titel=$1
+ |beweis=
+$0
+}}

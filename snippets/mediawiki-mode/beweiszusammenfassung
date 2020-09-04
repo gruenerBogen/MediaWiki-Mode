@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: beweiszusammenfassung
+# key: mfnf-beweiszusammenfassung
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{:Mathe für Nicht-Freaks: Vorlage:Beweiszusammenfassung
+ |titel=$1
+ |zusammenfassung=
+$0
+}}
