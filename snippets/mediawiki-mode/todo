@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: todo
+# key: mfnf-todo
+# binding: C-c C-e
+# group: Mathe für Nicht-Freaks
+# --
+{{todo|$0}}
