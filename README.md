@@ -81,6 +81,7 @@ MediaWiki-Mode:
 | lösung                 | :Mathe für Nicht-Freaks: Vorlage:Lösung                 |
 | lösungsweg             | :Mathe für Nicht-Freaks: Vorlage:Lösungsweg             |
 | satz                   | :Mathe für Nicht-Freaks: Vorlage:Satz                   |
+| todo                   | todo                                                    |
 | vollständige-induktion | :Mathe für Nicht-Freaks: Vorlage:Vollständige Induktion |
 | warnung                | :Mathe für Nicht-Freaks: Vorlage:Warnung                |
 
